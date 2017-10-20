@@ -1,6 +1,5 @@
 # TreeTable
 
-[![Flattr this](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=sciss&url=https%3A%2F%2Fgithub.com%2FSciss%2FTreeTable&title=TreeTable&language=Scala&tags=github&category=software)
 [![Build Status](https://travis-ci.org/Sciss/TreeTable.svg?branch=master)](https://travis-ci.org/Sciss/TreeTable)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sciss/treetable-scala_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sciss/treetable-scala_2.11)
 

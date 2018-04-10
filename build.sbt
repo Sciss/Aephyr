@@ -1,14 +1,14 @@
 lazy val baseName = "TreeTable"
 lazy val baseNameL = baseName.toLowerCase
 
-lazy val projectVersion = "1.4.0-SNAPSHOT"
+lazy val projectVersion = "1.4.0"
 lazy val mimaVersion    = "1.4.0"
 
 name := baseName
 
 // ---- scala main dependencies ----
 
-lazy val swingPlusVersion = "0.3.0-SNAPSHOT"
+lazy val swingPlusVersion = "0.3.0"
 
 // ---- test dependencies ----
 
@@ -20,7 +20,6 @@ lazy val commonSettings = Seq(
   version            := projectVersion,
   organization       := "de.sciss",
   scalaVersion       := "2.12.5",
-  crossScalaVersions := Seq("2.12.5", "2.11.12"),
   javacOptions                   := basicJavaOpts ++ Seq("-encoding", "utf8", "-Xlint:unchecked", "-target", "1.6"),
   javacOptions in (Compile, doc) := basicJavaOpts,  // doesn't eat `-encoding` or `target`
   description        := "A TreeTable component for Swing",
@@ -43,7 +42,7 @@ lazy val publishSettings = Seq(
   pomIncludeRepository := { _ => false }
 )
 
-lazy val root = Project(id = baseNameL, base = file("."))
+lazy val root = project.withId(baseNameL).in(file("."))
   .aggregate(javaProject, scalaProject)
   .dependsOn(javaProject, scalaProject) // i.e. root = full sub project. if you depend on root, will draw all sub modules.
   .settings(commonSettings)
@@ -51,7 +50,7 @@ lazy val root = Project(id = baseNameL, base = file("."))
     packagedArtifacts := Map.empty           // prevent publishing anything!
   )
 
-lazy val javaProject = Project(id = s"$baseNameL-java", base = file("java"))
+lazy val javaProject = project.withId(s"$baseNameL-java").in(file("java"))
   .settings(commonSettings)
   .settings(
     autoScalaLibrary := false,
@@ -62,10 +61,11 @@ lazy val javaProject = Project(id = s"$baseNameL-java", base = file("java"))
     mimaPreviousArtifacts := Set("de.sciss" % s"$baseNameL-java" % mimaVersion)
   )
 
-lazy val scalaProject = Project(id = s"$baseNameL-scala", base = file("scala"))
+lazy val scalaProject = project.withId(s"$baseNameL-scala").in(file("scala"))
   .dependsOn(javaProject)
   .settings(commonSettings)
   .settings(
+    crossScalaVersions := Seq("2.12.5", "2.11.12"),
     libraryDependencies ++= Seq(
       "de.sciss" %% "swingplus" % swingPlusVersion,
       "de.sciss" %  "submin"    % subminVersion % "test"

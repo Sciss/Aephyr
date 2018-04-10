@@ -20,6 +20,7 @@ lazy val commonSettings = Seq(
   version            := projectVersion,
   organization       := "de.sciss",
   scalaVersion       := "2.12.5",
+  crossScalaVersions := Seq("2.12.5", "2.11.12"),
   javacOptions                   := basicJavaOpts ++ Seq("-encoding", "utf8", "-Xlint:unchecked", "-target", "1.6"),
   javacOptions in (Compile, doc) := basicJavaOpts,  // doesn't eat `-encoding` or `target`
   description        := "A TreeTable component for Swing",
@@ -65,7 +66,6 @@ lazy val scalaProject = project.withId(s"$baseNameL-scala").in(file("scala"))
   .dependsOn(javaProject)
   .settings(commonSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.5", "2.11.12"),
     libraryDependencies ++= Seq(
       "de.sciss" %% "swingplus" % swingPlusVersion,
       "de.sciss" %  "submin"    % subminVersion % "test"

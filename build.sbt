@@ -1,30 +1,33 @@
 lazy val baseName = "TreeTable"
 lazy val baseNameL = baseName.toLowerCase
 
-lazy val projectVersion = "1.4.0"
-lazy val mimaVersion    = "1.4.0"
+lazy val projectVersion = "1.5.0-SNAPSHOT"
+lazy val mimaVersion    = "1.5.0"
 
 name := baseName
 
-// ---- scala main dependencies ----
+// ---- dependencies ----
 
-lazy val swingPlusVersion = "0.3.0"
-
-// ---- test dependencies ----
-
-lazy val subminVersion = "0.2.2"
+lazy val deps = new {
+  val main = new {
+    val swingPlus = "0.4.0-SNAPSHOT"
+  }
+  val test = new {
+    val submin = "0.2.3"
+  }
+}
 
 def basicJavaOpts = Seq("-source", "1.6")
 
 lazy val commonSettings = Seq(
   version            := projectVersion,
   organization       := "de.sciss",
-  scalaVersion       := "2.12.5",
-  crossScalaVersions := Seq("2.12.5", "2.11.12"),
+  scalaVersion       := "2.13.0-M5",
+  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-M5"),
   javacOptions                   := basicJavaOpts ++ Seq("-encoding", "utf8", "-Xlint:unchecked", "-target", "1.6"),
   javacOptions in (Compile, doc) := basicJavaOpts,  // doesn't eat `-encoding` or `target`
   description        := "A TreeTable component for Swing",
-  homepage           := Some(url(s"https://github.com/Sciss/${name.value}")),
+  homepage           := Some(url(s"https://git.iem.at/sciss/${name.value}")),
   licenses           := Seq("LGPL v3+" -> url("http://www.gnu.org/licenses/lgpl-3.0.txt"))
 ) ++ publishSettings
 
@@ -67,8 +70,8 @@ lazy val scalaProject = project.withId(s"$baseNameL-scala").in(file("scala"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "de.sciss" %% "swingplus" % swingPlusVersion,
-      "de.sciss" %  "submin"    % subminVersion % "test"
+      "de.sciss" %% "swingplus" % deps.main.swingPlus,
+      "de.sciss" %  "submin"    % deps.test.submin % Test
     ),
     pomExtra := pomBase ++ pomDevsSciss,
     mimaPreviousArtifacts := Set("de.sciss" %% s"$baseNameL-scala" % mimaVersion)
@@ -78,8 +81,8 @@ def pomExtraBoth = pomBase ++ pomDevsBoth
 
 def pomBase =
   <scm>
-    <url>git@github.com:Sciss/TreeTable.git</url>
-    <connection>scm:git:git@github.com:Sciss/TreeTable.git</connection>
+    <url>git@git.iem.at:sciss/TreeTable.git</url>
+    <connection>scm:git:git@git.iem.at:sciss/TreeTable.git</connection>
   </scm>
 
 def pomDevSciss =
@@ -106,3 +109,4 @@ def pomDevsSciss =
   <developers>
     {pomDevSciss}
   </developers>
+

@@ -26,7 +26,7 @@
 package de.sciss.treetable
 
 import scala.annotation.tailrec
-import collection.immutable.{IndexedSeq => IIdxSeq}
+import scala.collection.immutable.{IndexedSeq => Vec}
 
 trait AbstractTreeModel[A] extends TreeModel[A] {
   import TreeTable.Path
@@ -65,9 +65,9 @@ trait AbstractTreeModel[A] extends TreeModel[A] {
     publish(TreeStructureChanged(this, pathToRoot(node)))
   }
 
-  private def fire(nodes: Seq[A])(fun: (TreeModel[A], Path[A], Seq[(Int, A)]) => TreeModelEvent[A]) {
+  private def fire(nodes: swing.Seq[A])(fun: (TreeModel[A], Path[A], Seq[(Int, A)]) => TreeModelEvent[A]) {
     var pred  = Map.empty[A, Path[A]]
-    var paths = Map.empty[Path[A], IIdxSeq[(Int, A)]] withDefaultValue Vector.empty
+    var paths: Map[Path[A], Vec[(Int, A)]] = Map.empty withDefaultValue Vector.empty
     nodes.foreach { n =>
       val (path, idx) = getParent(n).fold(throw new IllegalArgumentException(s"$n does not have parent")) { parent =>
         val _path = pred.getOrElse(parent, {

@@ -26,13 +26,13 @@
 package de.sciss.treetable
 
 import javax.swing.{event => jse}
+
 import scala.swing.event.Event
-import collection.breakOut
 
 sealed trait TreeModelEvent[A] extends Event {
-  def model: TreeModel[A]
-  def path: TreeTable.Path[A]
-  def children: Seq[(Int, A)]
+  def model   : TreeModel[A]
+  def path    : TreeTable.Path[A]
+  def children: swing.Seq[(Int, A)]
 
   final private[treetable] def toJava(source: Any): jse.TreeModelEvent = {
     import TreeTable.pathToTreePath
@@ -41,7 +41,7 @@ sealed trait TreeModelEvent[A] extends Event {
     } else {
       val (idxSeq, nodesSeq) = children.unzip
       val indices = idxSeq.toArray
-      val nodes: Array[AnyRef] = nodesSeq.map(_.asInstanceOf[AnyRef])(breakOut)
+      val nodes: Array[AnyRef] = nodesSeq.iterator.map(_.asInstanceOf[AnyRef]).toArray
       new jse.TreeModelEvent(source, path, indices, nodes)
     }
   }

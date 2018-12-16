@@ -40,8 +40,8 @@ object ScalaDemo extends SimpleSwingApplication {
   case class Branch(key: String, value: String, children: Seq[Node]) extends Node
   case class Leaf(key: String, value: String) extends Node
 
-  lazy val top = {
-    val tm = new TreeModel[Node] {
+  lazy val top: Frame = {
+    val tm: TreeModel[Node] = new TreeModel[Node] {
       def getIndexOfChild(parent: Node, child: Node): Int = parent match {
         case Branch(_, _, ch) => ch.indexOf(child)
         case _ => -1

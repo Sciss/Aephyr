@@ -32,7 +32,7 @@ import scala.swing.event.Event
 sealed trait TreeModelEvent[A] extends Event {
   def model   : TreeModel[A]
   def path    : TreeTable.Path[A]
-  def children: swing.Seq[(Int, A)]
+  def children: scala.collection.Seq[(Int, A)]
 
   final private[treetable] def toJava(source: Any): jse.TreeModelEvent = {
     import TreeTable.pathToTreePath

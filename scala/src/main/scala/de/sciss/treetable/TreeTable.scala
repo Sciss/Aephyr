@@ -379,7 +379,7 @@ class TreeTable[A, Col <: TreeColumnModel[A]](treeModel0: TreeModel[A], treeColu
     peer.changeSelection(row, column, toggle, extend)
 
   object selection extends Publisher {
-    protected abstract class SelectionSet[B](a: => swing.Seq[B]) extends SetWrapper[B] {
+    protected abstract class SelectionSet[B](a: => scala.collection.Seq[B]) extends SetWrapper[B] {
 //      def -=(n: B): this.type
 //      def +=(n: B): this.type
       def contains(n: B): Boolean = a.contains(n)

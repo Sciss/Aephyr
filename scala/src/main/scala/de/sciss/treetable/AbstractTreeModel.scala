@@ -65,7 +65,7 @@ trait AbstractTreeModel[A] extends TreeModel[A] {
     publish(TreeStructureChanged(this, pathToRoot(node)))
   }
 
-  private def fire(nodes: swing.Seq[A])(fun: (TreeModel[A], Path[A], Seq[(Int, A)]) => TreeModelEvent[A]) {
+  private def fire(nodes: scala.collection.Seq[A])(fun: (TreeModel[A], Path[A], Seq[(Int, A)]) => TreeModelEvent[A]) {
     var pred  = Map.empty[A, Path[A]]
     var paths: Map[Path[A], Vec[(Int, A)]] = Map.empty withDefaultValue Vector.empty
     nodes.foreach { n =>

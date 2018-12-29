@@ -1,7 +1,7 @@
 lazy val baseName = "TreeTable"
 lazy val baseNameL = baseName.toLowerCase
 
-lazy val projectVersion = "1.5.0-SNAPSHOT"
+lazy val projectVersion = "1.5.0"
 lazy val mimaVersion    = "1.5.0"
 
 name := baseName
@@ -10,10 +10,10 @@ name := baseName
 
 lazy val deps = new {
   val main = new {
-    val swingPlus = "0.4.0-SNAPSHOT"
+    val swingPlus = "0.4.0"
   }
   val test = new {
-    val submin = "0.2.3"
+    val submin = "0.2.4"
   }
 }
 
@@ -61,6 +61,10 @@ lazy val javaProject = project.withId(s"$baseNameL-java").in(file("java"))
     crossPaths       := false,
     javacOptions in Compile ++= Seq("-g", "-target", "1.6", "-source", "1.6"),
     javacOptions in (Compile, doc) := Nil,  // yeah right, sssssuckers
+    publishArtifact := {
+      val old = publishArtifact.value
+      old && scalaVersion.value.startsWith("2.12")  // only publish once when cross-building
+    },
     pomExtra := pomExtraBoth,
     mimaPreviousArtifacts := Set("de.sciss" % s"$baseNameL-java" % mimaVersion)
   )

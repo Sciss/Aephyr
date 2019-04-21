@@ -9,7 +9,7 @@ etc for use in a GUI", released under the GNU LGPL v3+. The original author was 
 
 The Java component, in sub project `java`, is accompanied by Scala-Swing component, in sub project `scala`.
 
-All modifications, extensions and Scala project (C)opyright 2013&ndash;2018 by Hanns Holger Rutz. New project
+All modifications, extensions and Scala project (C)opyright 2013&ndash;2019 by Hanns Holger Rutz. New project
 released under the GNU LGPL v3+.
 
 ## example
@@ -25,7 +25,7 @@ To use the library:
     "de.sciss" %  "treetable-java"  % v  // Java only component
     "de.sciss" %% "treetable-scala" % v  // Scala component
 
-The current version `v` is `"1.5.0"`
+The current version `v` is `"1.5.1"`
 
 ## building
 

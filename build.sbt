@@ -1,7 +1,7 @@
 lazy val baseName = "TreeTable"
 lazy val baseNameL = baseName.toLowerCase
 
-lazy val projectVersion = "1.5.0"
+lazy val projectVersion = "1.5.1"
 lazy val mimaVersion    = "1.5.0"
 
 name := baseName
@@ -10,7 +10,7 @@ name := baseName
 
 lazy val deps = new {
   val main = new {
-    val swingPlus = "0.4.0"
+    val swingPlus = "0.4.2"
   }
   val test = new {
     val submin = "0.2.4"
@@ -22,8 +22,8 @@ def basicJavaOpts = Seq("-source", "1.6")
 lazy val commonSettings = Seq(
   version            := projectVersion,
   organization       := "de.sciss",
-  scalaVersion       := "2.13.0-M5",
-  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-M5"),
+  scalaVersion       := "2.12.8",
+  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-RC1"),
   javacOptions                   := basicJavaOpts ++ Seq("-encoding", "utf8", "-Xlint:unchecked", "-target", "1.6"),
   javacOptions in (Compile, doc) := basicJavaOpts,  // doesn't eat `-encoding` or `target`
   description        := "A TreeTable component for Swing",

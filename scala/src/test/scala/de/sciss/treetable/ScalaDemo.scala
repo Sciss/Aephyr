@@ -50,7 +50,7 @@ object ScalaDemo extends SimpleSwingApplication {
 
     def isLeaf: Boolean = false
 
-    def children(): util.Enumeration[_] = {
+    def children(): util.Enumeration[_ <: TreeNode] = {
       import scala.collection.JavaConverters._
       childNodes.iterator.asJavaEnumeration
     }
@@ -66,7 +66,7 @@ object ScalaDemo extends SimpleSwingApplication {
 
     def isLeaf: Boolean = true
 
-    def children(): util.Enumeration[_] = {
+    def children(): util.Enumeration[_ <: TreeNode] = {
       import scala.collection.JavaConverters._
       Nil.iterator.asJavaEnumeration
     }

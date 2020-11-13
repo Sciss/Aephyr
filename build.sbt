@@ -1,7 +1,7 @@
 lazy val baseName = "TreeTable"
 lazy val baseNameL = baseName.toLowerCase
 
-lazy val projectVersion = "1.6.0"
+lazy val projectVersion = "1.6.1"
 lazy val mimaVersion    = "1.6.0"
 
 name := baseName
@@ -13,7 +13,7 @@ lazy val deps = new {
     val swingPlus = "0.5.0"
   }
   val test = new {
-    val submin = "0.3.4"
+    val submin    = "0.3.4"
   }
 }
 

@@ -60,6 +60,7 @@ import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.LookAndFeel;
+import javax.swing.Painter;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.SwingConstants;
@@ -94,8 +95,6 @@ import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
-
-import com.sun.java.swing.Painter;
 
 import de.sciss.treetable.j.TreeTable;
 import de.sciss.treetable.j.TreeTable.DropLocation;

@@ -2,7 +2,7 @@
  * TreeColumnChanged.scala
  * (TreeTable)
  *
- * Copyright (c) 2013 Hanns Holger Rutz. All rights reserved.
+ * Copyright (c) 2013-2020 Hanns Holger Rutz. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

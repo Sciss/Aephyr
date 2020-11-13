@@ -1,16 +1,16 @@
 package de.sciss.treetable
 
-import javax.swing.plaf.ColorUIResource
-
-import scala.swing._
-import javax.swing.{JSeparator, JTree, UIManager}
+import java.util
 
 import de.sciss.submin.Submin
-
-import scala.util.control.NonFatal
 import de.sciss.treetable.TreeTable.Path
+import javax.swing.plaf.ColorUIResource
+import javax.swing.tree.TreeNode
+import javax.swing.{JSeparator, JTree, UIManager}
 
 import scala.annotation.switch
+import scala.swing._
+import scala.util.control.NonFatal
 
 object ScalaDemo extends SimpleSwingApplication {
   override def startup(args: Array[String]): Unit = {
@@ -33,12 +33,44 @@ object ScalaDemo extends SimpleSwingApplication {
     super.startup(args)
   }
 
-  sealed trait Node {
-    def key: String
-    def value: String
+  sealed trait Node extends javax.swing.tree.TreeNode {
+    def key   : String
+    def value : String
+
+    def getParent: TreeNode = throw new UnsupportedOperationException
   }
-  case class Branch(key: String, value: String, children: Seq[Node]) extends Node
-  case class Leaf(key: String, value: String) extends Node
+  case class Branch(key: String, value: String, childNodes: Seq[Node]) extends Node {
+    def getChildAt(childIndex: Int): TreeNode = childNodes(childIndex)
+
+    def getChildCount: Int = childNodes.size
+
+    def getIndex(node: TreeNode): Int = childNodes.indexOf(node)
+
+    def getAllowsChildren: Boolean = true
+
+    def isLeaf: Boolean = false
+
+    def children(): util.Enumeration[_] = {
+      import scala.collection.JavaConverters._
+      childNodes.iterator.asJavaEnumeration
+    }
+  }
+  case class Leaf(key: String, value: String) extends Node {
+    def getChildAt(childIndex: Int): TreeNode = throw new UnsupportedOperationException
+
+    def getChildCount: Int = 0
+
+    def getIndex(node: TreeNode): Int = throw new UnsupportedOperationException
+
+    def getAllowsChildren: Boolean = false
+
+    def isLeaf: Boolean = true
+
+    def children(): util.Enumeration[_] = {
+      import scala.collection.JavaConverters._
+      Nil.iterator.asJavaEnumeration
+    }
+  }
 
   lazy val top: Frame = {
     val tm: TreeModel[Node] = new TreeModel[Node] {

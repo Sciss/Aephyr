@@ -2,7 +2,7 @@
  * TreeTable.scala
  * (TreeTable)
  *
- * Copyright (c) 2013 Hanns Holger Rutz. All rights reserved.
+ * Copyright (c) 2013-2020 Hanns Holger Rutz. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -80,9 +80,8 @@ class TreeTable[A, Col <: TreeColumnModel[A]](treeModel0: TreeModel[A], treeColu
 
   import TreeTable.{Path, pathToTreePath, treePathToPath}
 
-  def this(treeModel0: TreeModel[A], treeColumnModel0: Col) {
+  def this(treeModel0: TreeModel[A], treeColumnModel0: Col) =
     this(treeModel0, treeColumnModel0, null)
-  }
 
   private val /* var */ _treeModel        = treeModel0
   private val /* var */ _treeColumnModel  = treeColumnModel0
@@ -95,7 +94,8 @@ class TreeTable[A, Col <: TreeColumnModel[A]](treeModel0: TreeModel[A], treeColu
   // def tableModel: jtab.TableModel
 
   def renderer: TreeTableCellRenderer = _renderer
-  def renderer_=(r: TreeTableCellRenderer) {
+
+  def renderer_=(r: TreeTableCellRenderer): Unit = {
     val rp = r match {
       case w: TreeTableCellRenderer.Wrapped => w.peer
       case _ => new j.TreeTableCellRenderer {
@@ -120,21 +120,18 @@ class TreeTable[A, Col <: TreeColumnModel[A]](treeModel0: TreeModel[A], treeColu
   // def editable: Boolean = ...
   // def cellValues: Iterator[A] = ...
 
-  private def wrapTreeModel(_peer: TreeModel[A]): jtree.TreeModel = new {
-    val peer = _peer
-  } with jtree.TreeModel {
+  private def wrapTreeModel(_peer: TreeModel[A]): jtree.TreeModel = new jtree.TreeModel {
     jModel =>
 
-    // val peer = _treeModel
+    val peer = _peer
 
     def getRoot: AnyRef = peer.root.asInstanceOf[AnyRef]
     def getChild(parent: Any, index: Int): AnyRef = peer.getChild(parent.asInstanceOf[A], index).asInstanceOf[AnyRef]
     def getChildCount(parent: Any): Int = peer.getChildCount(parent.asInstanceOf[A])
     def isLeaf(node: Any): Boolean = peer.isLeaf(node.asInstanceOf[A])
 
-    def valueForPathChanged(path: TreePath, newValue: Any) {
+    def valueForPathChanged(path: TreePath, newValue: Any): Unit =
       peer.valueForPathChanged(path, newValue.asInstanceOf[A])  // XXX TODO: is newValue really an `A`?
-    }
 
     def getIndexOfChild(parent: Any, child: Any): Int =
       peer.getIndexOfChild(parent.asInstanceOf[A], child.asInstanceOf[A])
@@ -160,15 +157,14 @@ class TreeTable[A, Col <: TreeColumnModel[A]](treeModel0: TreeModel[A], treeColu
         listeners.foreach { l => l.treeStructureChanged(evt) }
     }
 
-    def addTreeModelListener(l: jse.TreeModelListener) {
+    def addTreeModelListener(l: jse.TreeModelListener): Unit =
       sync.synchronized {
         val start = listeners.isEmpty
         listeners :+= l
         if (start) peer.reactions += reaction
       }
-    }
 
-    def removeTreeModelListener(l: jse.TreeModelListener) {
+    def removeTreeModelListener(l: jse.TreeModelListener): Unit =
       sync.synchronized {
         val idx = listeners.indexOf(l)
         if (idx >= 0) {
@@ -176,12 +172,10 @@ class TreeTable[A, Col <: TreeColumnModel[A]](treeModel0: TreeModel[A], treeColu
           if (listeners.isEmpty) peer.reactions -= reaction
         }
       }
-    }
   }
 
-  private def wrapTreeColumnModel(_peer: Col): j.TreeColumnModel = new {
+  private def wrapTreeColumnModel(_peer: Col): j.TreeColumnModel = new j.TreeColumnModel {
     val peer = _peer
-  } with j.TreeColumnModel {
     // val peer = _treeColumnModel
 
     def getHierarchicalColumn: Int = peer.hierarchicalColumn
@@ -190,7 +184,7 @@ class TreeTable[A, Col <: TreeColumnModel[A]](treeModel0: TreeModel[A], treeColu
     def getColumnCount: Int = peer.columnCount
     def getColumnName(column: Int): String = peer.getColumnName(column)
     def getValueAt(node: Any, column: Int): AnyRef = peer.getValueAt(node.asInstanceOf[A], column).asInstanceOf[AnyRef]
-    def setValueAt(value: Any, node: Any, column: Int) { peer.setValueAt(value, node.asInstanceOf[A], column) }
+    def setValueAt(value: Any, node: Any, column: Int): Unit = peer.setValueAt(value, node.asInstanceOf[A], column)
 
     private val sync      = new AnyRef
     private var listeners = Vector.empty[TreeColumnModelListener]
@@ -203,15 +197,14 @@ class TreeTable[A, Col <: TreeColumnModel[A]](treeModel0: TreeModel[A], treeColu
         }
     }
 
-    def addTreeColumnModelListener(l: TreeColumnModelListener) {
+    def addTreeColumnModelListener(l: TreeColumnModelListener): Unit =
       sync.synchronized {
         val start = listeners.isEmpty
         listeners :+= l
         if (start) peer.reactions += reaction
       }
-    }
 
-    def removeTreeColumnModelListener(l: TreeColumnModelListener) {
+    def removeTreeColumnModelListener(l: TreeColumnModelListener): Unit =
       sync.synchronized {
         val idx = listeners.indexOf(l)
         if (idx >= 0) {
@@ -219,7 +212,6 @@ class TreeTable[A, Col <: TreeColumnModel[A]](treeModel0: TreeModel[A], treeColu
           if (listeners.isEmpty) peer.reactions -= reaction
         }
       }
-    }
   }
 
   override lazy val peer: j.TreeTable =
@@ -449,7 +441,7 @@ class TreeTable[A, Col <: TreeColumnModel[A]](treeModel0: TreeModel[A], treeColu
     //    }
 
     peer.getSelectionModel.addTreeSelectionListener(new jse.TreeSelectionListener {
-      def valueChanged(e: jse.TreeSelectionEvent) {
+      def valueChanged(e: jse.TreeSelectionEvent): Unit = {
         val (pathsAdded, pathsRemoved) = e.getPaths.toVector.partition(e.isAddedPath)
 
         publish(TreeTableSelectionChanged(me,

@@ -2,7 +2,7 @@
  * TreeColumnModel.scala
  * (TreeTable)
  *
- * Copyright (c) 2013 Hanns Holger Rutz. All rights reserved.
+ * Copyright (c) 2013-2020 Hanns Holger Rutz. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -57,17 +57,17 @@ object TreeColumnModel {
     final def getColumnName (column: Int): String   = columns(column).name
     final def getColumnClass(column: Int): Class[_] = columns(column).ct.runtimeClass
 
-   	final def columnCount: Int = columns.length
+    final def columnCount: Int = columns.length
 
     def getValueAt(node: A, column: Int): Any = columns(column)(node)
 
-    def setValueAt(value: Any, node: A, column: Int) {
+    def setValueAt(value: Any, node: A, column: Int): Unit = {
       columns(column).asInstanceOf[Column[A, Any]](node) = value
       val path = pathToRoot(node)
       publish(TreeColumnChanged(this, path, column))
     }
 
-   	def isCellEditable(node: A, column: Int): Boolean = columns(column).isEditable(node)
+    def isCellEditable(node: A, column: Int): Boolean = columns(column).isEditable(node)
 
     def hierarchicalColumn = 0
   }
@@ -109,12 +109,12 @@ trait TreeColumnModel[A] extends Publisher {
   def getColumnName (column: Int): String
   def getColumnClass(column: Int): Class[_]
 
- 	def columnCount: Int
+  def columnCount: Int
 
- 	def getValueAt(node: A, column: Int): Any
- 	def setValueAt(value: Any, node: A, column: Int): Unit
+  def getValueAt(node: A, column: Int): Any
+  def setValueAt(value: Any, node: A, column: Int): Unit
 
- 	def isCellEditable(node: A, column: Int): Boolean
+  def isCellEditable(node: A, column: Int): Boolean
 
   def hierarchicalColumn: Int
 }

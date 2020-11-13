@@ -1,8 +1,8 @@
 lazy val baseName = "TreeTable"
 lazy val baseNameL = baseName.toLowerCase
 
-lazy val projectVersion = "1.5.1"
-lazy val mimaVersion    = "1.5.0"
+lazy val projectVersion = "1.6.0"
+lazy val mimaVersion    = "1.6.0"
 
 name := baseName
 
@@ -10,21 +10,21 @@ name := baseName
 
 lazy val deps = new {
   val main = new {
-    val swingPlus = "0.4.2"
+    val swingPlus = "0.5.0"
   }
   val test = new {
-    val submin = "0.2.4"
+    val submin = "0.3.4"
   }
 }
 
-def basicJavaOpts = Seq("-source", "1.6")
+def basicJavaOpts = Seq("-source", "1.8")
 
 lazy val commonSettings = Seq(
   version            := projectVersion,
   organization       := "de.sciss",
-  scalaVersion       := "2.12.8",
-  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-RC1"),
-  javacOptions                   := basicJavaOpts ++ Seq("-encoding", "utf8", "-Xlint:unchecked", "-target", "1.6"),
+  scalaVersion       := "2.13.3",
+  crossScalaVersions := Seq("3.0.0-M1", "2.13.3", "2.12.12"),
+  javacOptions                   := basicJavaOpts ++ Seq("-encoding", "utf8", "-Xlint:unchecked", "-target", "1.8"),
   javacOptions in (Compile, doc) := basicJavaOpts,  // doesn't eat `-encoding` or `target`
   description        := "A TreeTable component for Swing",
   homepage           := Some(url(s"https://git.iem.at/sciss/${name.value}")),
@@ -59,11 +59,11 @@ lazy val javaProject = project.withId(s"$baseNameL-java").in(file("java"))
   .settings(
     autoScalaLibrary := false,
     crossPaths       := false,
-    javacOptions in Compile ++= Seq("-g", "-target", "1.6", "-source", "1.6"),
+    javacOptions in Compile ++= Seq("-g", "-target", "1.8", "-source", "1.8"),
     javacOptions in (Compile, doc) := Nil,  // yeah right, sssssuckers
     publishArtifact := {
       val old = publishArtifact.value
-      old && scalaVersion.value.startsWith("2.12")  // only publish once when cross-building
+      old && scalaVersion.value.startsWith("2.13")  // only publish once when cross-building
     },
     pomExtra := pomExtraBoth,
     mimaPreviousArtifacts := Set("de.sciss" % s"$baseNameL-java" % mimaVersion)

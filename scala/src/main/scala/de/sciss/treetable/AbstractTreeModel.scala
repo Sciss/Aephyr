@@ -2,7 +2,7 @@
  * AbstractTreeModel.scala
  * (TreeTable)
  *
- * Copyright (c) 2013 Hanns Holger Rutz. All rights reserved.
+ * Copyright (c) 2013-2020 Hanns Holger Rutz. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -44,28 +44,24 @@ trait AbstractTreeModel[A] extends TreeModel[A] {
     loop(Path.empty, node)
   }
 
-  final protected def fireNodesChanged(nodes: A*) {
+  final protected def fireNodesChanged(nodes: A*): Unit =
     fire(nodes)(TreeNodesChanged[A])
-  }
 
   /** Fire a `TreeNodesChanged` for the root node. */
-  final protected def fireRootChanged() {
+  final protected def fireRootChanged(): Unit =
     publish(TreeNodesChanged(this, Path(root)))
-  }
 
-  final protected def fireNodesInserted(nodes: A*) {
+  final protected def fireNodesInserted(nodes: A*): Unit =
     fire(nodes)(TreeNodesInserted[A])
-  }
 
-  final protected def fireNodesRemoved(nodes: A*) {
+  final protected def fireNodesRemoved(nodes: A*): Unit =
     fire(nodes)(TreeNodesRemoved[A])
-  }
 
-  final protected def fireStructureChanged(node: A) {
+  final protected def fireStructureChanged(node: A): Unit =
     publish(TreeStructureChanged(this, pathToRoot(node)))
-  }
 
-  private def fire(nodes: scala.collection.Seq[A])(fun: (TreeModel[A], Path[A], Seq[(Int, A)]) => TreeModelEvent[A]) {
+  private def fire(nodes: scala.collection.Seq[A])
+                  (fun: (TreeModel[A], Path[A], Seq[(Int, A)]) => TreeModelEvent[A]): Unit = {
     var pred  = Map.empty[A, Path[A]]
     var paths: Map[Path[A], Vec[(Int, A)]] = Map.empty withDefaultValue Vector.empty
     nodes.foreach { n =>

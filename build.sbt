@@ -19,11 +19,15 @@ lazy val deps = new {
 
 def basicJavaOpts = Seq("-source", "1.8")
 
+// sonatype plugin requires that these are in global
+ThisBuild / version      := projectVersion
+ThisBuild / organization := "de.sciss"
+
 lazy val commonSettings = Seq(
-  version            := projectVersion,
-  organization       := "de.sciss",
-  scalaVersion       := "2.13.3",
-  crossScalaVersions := Seq("3.0.0-M1", "2.13.3", "2.12.12"),
+//  version            := projectVersion,
+//  organization       := "de.sciss",
+  scalaVersion       := "2.13.4",
+  crossScalaVersions := Seq("3.0.0-M2", "2.13.4", "2.12.12"),
   javacOptions                   := basicJavaOpts ++ Seq("-encoding", "utf8", "-Xlint:unchecked", "-target", "1.8"),
   javacOptions in (Compile, doc) := basicJavaOpts,  // doesn't eat `-encoding` or `target`
   description        := "A TreeTable component for Swing",
